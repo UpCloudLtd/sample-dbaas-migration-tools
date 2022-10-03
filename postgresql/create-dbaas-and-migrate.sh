@@ -3,7 +3,7 @@ help()
 {
     echo "Usage:
     create-dbaas-and-migrate.sh [ Required options]
-    Options:
+    Required Options:
       -n <Upcloud DBaaS hostname>
       -S <UpCloud DBaaS plan size>
       -z <UpCloud zone/Datacenter>
@@ -11,10 +11,11 @@ help()
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>
-      -d <Database name of bootstrapping the initial connection>
       -m <Migration method. Value dump or replication>
-      -i <Comma separated list of databases to ignore>
       -s <Should we use SSL connection to source server during migration. Value true or false>
+    Secondary options:
+      -i <Comma separated list of databases to ignore>
+      -d <Database name of bootstrapping the initial connection>
     Example:
       create-dbaas-and-migrate.sh -n updcloud-dbaas -S 2x2xCPU-4GB-50GB -z pl-waw1 -H yoursourceserver.com -U root -p YourPassW0rd -P 3306 -m dump -d defaultdb -s false
     Use -h for infromation about this script.

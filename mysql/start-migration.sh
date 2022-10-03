@@ -3,7 +3,7 @@ help()
 {
     echo "Usage:
     start-migration.sh [ Required options]
-    Options:
+    Required options:
       -u <UpCloud DBaaS UUID>
       -H <Hostname or IP address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>

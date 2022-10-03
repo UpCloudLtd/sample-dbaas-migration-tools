@@ -3,7 +3,7 @@ help()
 {
     echo "Usage:
     create-dbaas-and-migrate.sh [ Options]
-    Requited options:
+    Required options:
       -n <Upcloud DBaaS hostname>
       -S <UpCloud DBaaS plan size>
       -z <UpCloud zone/Datacenter>

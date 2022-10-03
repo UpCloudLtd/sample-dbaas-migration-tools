@@ -39,7 +39,7 @@ This script creates DBaaS and starts migration from source database server to ne
 ```
 Usage:
     create-dbaas-and-migrate.sh [ Options]
-    Requited options:
+    Required options:
       -n <Upcloud DBaaS hostname>
       -S <UpCloud DBaaS plan size>
       -z <UpCloud zone/Datacenter>
@@ -62,7 +62,7 @@ This script can be used to start migration to UpCloud DBaaS service that is alre
 ```
 Usage:
     start-migration.sh [ Required options]
-    Options:
+    Required options:
       -u <UpCloud DBaaS UUID>
       -H <Hostname or IP address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>
