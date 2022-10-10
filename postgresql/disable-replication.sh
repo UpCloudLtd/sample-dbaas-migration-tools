@@ -26,8 +26,8 @@ while [[ $# -gt 0 ]]; do
       help
       ;;
 
-    -?)
-      echo "Invalid option: -${OPTARG}."
+    -*|--*)
+      echo "Invalid option"
       echo
       help
       ;;

@@ -276,7 +276,7 @@ bash$ ./start-migration.sh -u 09b309c8-f977-404c-9d7d-10be534f8cff  -H yoursourc
 }
 ```
 #### disable-replication.sh
-This script can be used to diable replication when you are using replication method for migration.
+This script can be used to disable replication when you are using replication method for migration.
 
 ```
 Usage:

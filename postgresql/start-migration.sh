@@ -9,13 +9,10 @@ help()
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>
-      -m <Migration method. Value dump or replication>
       -s <Should we use SSL connection to source server during migration. Value true or false>
-    Secondary options:
-      -i <Comma separated list of databases to ignore>
-      -d <Database name of bootstrapping the initial connection>
+      -d <Name of database that exits in source database server used for bootstrapping the initial connection>
     Example:
-      start-migration.sh -u 09352622-5db9-4053-b3f2-791d3f8c8f63 -H yoursourceserver.com -U root -p YourPassW0rd -P 3306 -d defaultdb -m dump -s false
+      start-migration.sh -u 09352622-5db9-4053-b3f2-791d3f8c8f63 -H yoursourceserver.com -U root -p YourPassW0rd -P 5432 -d postgres -s false
     Use -h for infromation about this script.
     "
     exit 2
@@ -56,18 +53,8 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
-    -m)
-      METHOD=$2
-      shift
-      shift
-      ;;
     -s)
       SSL=$2
-      shift
-      shift
-      ;;
-    -i)
-      IGNORE_DBS=$2
       shift
       shift
       ;;
@@ -83,12 +70,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z $SOURCE_HOST || -z $SOURCE_USER || -z $SOURCE_PORT || -z $SOURCE_PASSWORD || -z $METHOD || -z $SSL ]]
+if [[ -z $SOURCE_HOST || -z $SOURCE_USER || -z $SOURCE_PORT || -z $SOURCE_PASSWORD || -z $DBNAME || -z $SSL ]]
 then
    echo "Missing required variable. You need to define all required arguments."
    echo
    help
 fi
-DATA="{ \"properties\": { \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"method\": \"$METHOD\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}"
+DATA="{ \"properties\": { \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}"
 result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X PATCH -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID -d "$DATA")
 echo $result | jq
