@@ -21,7 +21,7 @@ With `replication` method you can allow replication to catch up, then change DNS
 - User on the source database has enough permissions to create a replication user and read data
 - `server_id` on the source and the target do not overlap
 
-You can change required parameters in runtime via MySQL cli. For example:
+You can change value of required parameters for example in runtime via MySQL cli:
 ```
 SET GLOBAL server_id=21;
 SET GLOBAL enforce_gtid_consistency=ON;
