@@ -96,7 +96,7 @@ then
    help
 fi
 
-DATA="{ \"hostname_prefix\": \"$UPCLOUD_HOSTNAME\",  \"plan\": \"$UPCLOUD_PLAN\",  \"title\": \"$UPCLOUD_HOSTNAME\",  \"type\": \"pg\",  \"zone\": \"$UPCLOUD_ZONE\", \"properties\": { \"max_replication_slots\": 40, \"version\": \"$PG_VERSION\",  \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}}"
+DATA="{ \"hostname_prefix\": \"$UPCLOUD_HOSTNAME\",  \"plan\": \"$UPCLOUD_PLAN\",  \"title\": \"$UPCLOUD_HOSTNAME\",  \"type\": \"pg\",  \"zone\": \"$UPCLOUD_ZONE\", \"properties\": { \"max_replication_slots\": 40, \"max_logical_replication_workers\": 10, \"version\": \"$PG_VERSION\",  \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}}"
 result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X POST -H Content-Type:application/json https://api.upcloud.com/1.3/database -d "$DATA")
 echo $result | jq
 UUID=$(echo $result| jq|grep uuid|cut -d'"' -f4)
