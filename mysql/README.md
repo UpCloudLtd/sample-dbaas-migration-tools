@@ -4,7 +4,7 @@ feature before using it in production enviroment. You should always have backup 
 
 ## Requirements
 
-Your current MySQL/MariaDB server needs to have superuser that is allowed to log in from any IP address or from public 
+Your current MySQLserver needs to have superuser that is allowed to log in from any IP address or from public 
 IP address of your DBaaS active node.
 
 After migration is done you need to change your DNS/host settings so that software connects to new DB cluster. 
@@ -14,7 +14,6 @@ With `replication` method you can allow replication to catch up, then change DNS
 ### Requirements for replication method
 
 - The source MySQL database should be in >= 5.7 and <= 8.0
-  - MariaDB is not supported for replication method
 - The target MSQL database should have at least version 8.0
 - All databases have the same engine - InnoDB
 - `gtid_mode` is ON on both the source and the target
@@ -31,7 +30,7 @@ SET GLOBAL gtid_mode=ON;
 ```
 ### Requirements for mysqldump 
 
-Method `mysqldump` does not have many specific requirements and can even be used with current MariaDB versions. Just like any other mysqldump migration you should lock 
+Method `mysqldump` does not have many specific requirements except DBaaS active node has to be able to access MySQL server. Just like any other mysqldump migration you should lock 
 source database from changes during migration and this can cause downtime. If you allow writing to database during `mysqldump` migration
 you are likely going to have changes in database that are not migrated.
 
