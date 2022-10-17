@@ -5,6 +5,6 @@ directories based on Database type.
 ![Migration diagram](diag.png)
 
 ## Getting started
-- [MySQL](mysql/) has examples for MySQL/MariaDB migration
+- [MySQL](mysql/) has examples for MySQL migration
 - [PostgreSQL](postgresql/) has examples for PostgreSQL migration
 

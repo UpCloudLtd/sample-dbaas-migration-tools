@@ -1,6 +1,7 @@
 # PostgreSQL examples
 Database migration feature can be used to migrate your current PostgreSQL databases to UpCloud DBaaS. 
-Feature supports both logical replication and using a dump and restore process.
+Feature supports both logical replication and using a dump and restore process. Please test migration 
+feature before using it in production enviroment. You should always have backup available in case something goes wrong with migration.
 
 Logical replication is the default method and once successfully set up, this keeps the two databases synchronized until 
 the replication is interrupted. If the preconditions for logical replication are not met, 
@@ -186,10 +187,13 @@ You with logical replication might need to disable and enable migration few time
 }
 ```
 
-Once migration is completed and you can disable replication with `disable-replication.sh`
+Once migration is completed (`"status": "done"`) you can move SQL queries to new DBaaS service and can disable replication with `disable-replication.sh`
 ```
 bash disable-replication.sh -u 09fc3cec-fa71-4979-8aa3-ec7594cb944d
 ```
+
+Please note that migration does not transfer users of source database server so you will need to create users to 
+DBaaS via UpCloud Hub
 #### create-dbaas-and-migrate.sh
 This script creates DBaaS and starts migration from source database server to new DBaaS system. 
 

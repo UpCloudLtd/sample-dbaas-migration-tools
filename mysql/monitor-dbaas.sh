@@ -40,7 +40,7 @@ then
    help
 fi
 while true; do
-   result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X GET -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID)
+   result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X GET -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/migration-status)
    echo $result | jq
    sleep 10
 done
