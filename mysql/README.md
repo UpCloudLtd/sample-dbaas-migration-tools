@@ -304,3 +304,42 @@ Oct 17 08:51:21 mysql1-test mysqld[1024]: 10:36:54 112 [Warning] Access denied f
 ### DBaaS is missing some tables or data from source database
 If you have changed or added data to source database after migration finished, it has not been copied to DBaaS service. 
 You can re-do the migration in order to transfer missing data.
+
+### Error during migration
+If there is clear reason for migration failure you can see it in output of `monitor-dbaas.sh`.
+```
+{
+  "error": "MySQL Errno - 13117: The replication receiver thread cannot start because the master has GTID_MODE = OFF and this server has GTID_MODE = ON.",
+  "method": "replication",
+  "seconds_behind_master": 0,
+  "source_active": true,
+  "status": "failed",
+  "databases": [
+    {
+      "dbname": "test25",
+      "method": "replication",
+      "status": "failed"
+    },
+    {
+      "dbname": "test23",
+      "method": "replication",
+      "status": "failed"
+    },
+    {
+      "dbname": "test21",
+      "method": "replication",
+      "status": "failed"
+    },
+    {
+      "dbname": "test22",
+      "method": "replication",
+      "status": "failed"
+    },
+    {
+      "dbname": "test24",
+      "method": "replication",
+      "status": "failed"
+    }
+  ]
+}
+```
