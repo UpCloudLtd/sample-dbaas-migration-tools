@@ -96,7 +96,6 @@ DATA="{\"migration_check\": { \"source_service_uri\": \"mysql://$SOURCE_USER:$SO
 result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X POST -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/task -d "$DATA") 
 taskId=$( jq -r '.id?' <<< $result)
 
-echo $DATA
 if [[ "$taskId" == "null" ]]; then
   echo -e "Error: failed to create migration_check task!" 
   echo "$result" 
