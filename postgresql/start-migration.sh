@@ -5,7 +5,7 @@ help()
     start-migration.sh [ Required options]
     Required ptions:
       -u <UpCloud DBaaS UUID>
-      -H <Hostname or IP address of server where to migrate data from>
+      -H <Hostname or IPv4 address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>

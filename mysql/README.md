@@ -300,6 +300,12 @@ When DBaaS active node is unable to access database you might see following erro
 Oct 17 08:51:21 mysql1-test mysqld[1024]: 10:36:54 112 [Warning] Access denied for user 'root'@'185-70-198-14.pl-waw1.upcloud.host' (using password: YES)
 ```
 
+### Migration login fails and source DB is MySQL running in Docker
+Default mysql docker will not allow root@% to access mysql outside of localhost. You will need to add privileges when accessed
+from remote IP. For example `GRANT ALL PRIVILEGES ON mysql.* TO 'root'@'<Your source IP address>' WITH GRANT OPTION; `
+```
+2022-10-26T14:09:59.136938Z 1162746 [Note] Access denied for user 'root'@'%' to database 'mysql'
+```
 ### DBaaS is missing some tables or data from source database
 If you have changed or added data to source database after migration finished, it has not been copied to DBaaS service. 
 You can re-do the migration in order to transfer missing data.

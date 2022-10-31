@@ -5,7 +5,7 @@ help()
     start-migration.sh [ Required options]
     Required options:
       -u <UpCloud DBaaS UUID>
-      -H <Hostname or IP address of server where to migrate data from>
+      -H <Hostname or IPv4 address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>
@@ -89,6 +89,6 @@ then
    echo
    help
 fi
-DATA="{ \"properties\": { \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"method\": \"$METHOD\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}"
+DATA="{ \"properties\": { \"migration\": { \"host\": \"$SOURCE_HOST\", \"dbname\": \"$DBNAME\", \"ignore_dbs\": \"$IGNORE_DBS\", \"method\": \"$METHOD\", \"password\": \"$SOURCE_PASSWORD\", \"port\": $SOURCE_PORT, \"ssl\": $SSL, \"username\": \"$SOURCE_USER\" }}}"
 result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X PATCH -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID -d "$DATA")
 echo $result | jq
