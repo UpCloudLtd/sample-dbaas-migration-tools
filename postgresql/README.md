@@ -35,11 +35,14 @@ you will need to change DNS settings or software settings to connect to UpCloud 
 
 ## Bash script usage 
 
-We have provided you with following bash scripts `start-migration.sh`, `disable-replication.sh` and `create-dbaas-and-migrate.sh` that can be used to 
+We have provided you with following bash scripts `start-migration.sh`, `start-migration-pre-checks.sh`, `disable-replication.sh` and `create-dbaas-and-migrate.sh` that can be used to 
 migrate your database to UpCloud DBaaS. You can monitor migration status and UpCloud DBaaS status with `monitor-dbaas.sh`. 
 
 You can migrate your database to UpCloud DBaaS with `create-dbaas-and-migrate.sh` if you need to create the UpCloud DBaaS service at the same time. If you 
 have existing UpCloud DBaaS or you want to create it via [UpCloud Control Panel](https://hub.upcloud.com/) you can use `start-migration.sh` script. 
+
+You should use `start-migration-pre-checks.sh` script to check if migration settings are correct and what migration method is recommended. 
+This script is also useful when debugging issues with migration.
 
 ### Bash script example
 First you need to define your UpCloud HUB/API username and password as environment variable to allow included scripts to work.
@@ -48,27 +51,32 @@ export UPCLOUD_USERNAME=Your_username
 export UPCLOUD_PASSWORD=Your_password
 ```
 
-First run script `create-dbaas-and-migrate.sh`
+You should start by validating you migration setting before migration with `start-migration-pre-checks.sh`
 ```
-bash create-dbaas-and-migrate.sh -n upcloud-test -S 2x2xCPU-4GB-50GB -z pl-waw1 -H 5.22.221.106 -U superuser -p YourPassW0rd -P 5432 -s false -d postgres -v 13
-{
-  "backups": [],
-  "components": [
-    {
-      "component": "pg",
-      "host": "upcloud-test-mystmtdaytdt.db.upclouddatabases.com",
-      "port": 11550,
-      "route": "dynamic",
-      "usage": "primary"
-    },
-  ... API response about created DBaaS service ...
-  "zone": "pl-waw1"
-}
-UUID of created DBaaS service:
-09fc3cec-fa71-4979-8aa3-ec7594cb944d
-```
+bash start-migration-pre-checks.sh -u 09f22e89-13a4-4e1f-95fd-ac613707145a -U superuser -p YourPassW0rd -P 5432 -d postgres -m replication -s true -H 5.22.221.106 
+Creating migration check task… 
 
-If you have want to create DBaaS via HUB use `start-migration.sh` instead.
+Success: migration check task created
+id: 253d883b-ef34-4db4-a71c-2456dfed3ba9 
+
+Polling for migration check task result... 
+
+Task Result : poll #1 
+{
+  "create_time": "2022-10-31T10:37:56Z",
+  "operation": "pg_migration_check",
+  "id": "253d883b-ef34-4db4-a71c-2456dfed3ba9",
+  "result_codes": [],
+  "result": "Migration method will be 'replication'.",
+  "success": true
+}
+
+
+migration check task completed
+
+```
+Then you can use `start-migration.sh` to start actual migration.
+
 ```
 bash start-migration.sh -u 09fc3cec-fa71-4979-8aa3-ec7594cb944d -H 5.22.221.106 -U superuser -p YourPassW0rd -P 5432 -s false -d postgres 
 {
@@ -119,8 +127,10 @@ bash monitor-dbaas.sh -u 09fc3cec-fa71-4979-8aa3-ec7594cb944d
   "status": "done",
   "databases": []
 }
+
 ```
-You with logical replication might need to disable and enable migration few times before all databases are in sync.
+With logical replication you need to wait for logical replication to finnish. Some cases you might need to disable
+and enable migration few times before all databases are in sync.
 
 ```
 {
@@ -187,13 +197,34 @@ You with logical replication might need to disable and enable migration few time
 }
 ```
 
+If you do not have DBaaS running you can create and start migration by running script `create-dbaas-and-migrate.sh`
+```
+bash create-dbaas-and-migrate.sh -n upcloud-test -S 2x2xCPU-4GB-50GB -z pl-waw1 -H 5.22.221.106 -U superuser -p YourPassW0rd -P 5432 -s false -d postgres -v 13
+{
+  "backups": [],
+  "components": [
+    {
+      "component": "pg",
+      "host": "upcloud-test-mystmtdaytdt.db.upclouddatabases.com",
+      "port": 11550,
+      "route": "dynamic",
+      "usage": "primary"
+    },
+  ... API response about created DBaaS service ...
+  "zone": "pl-waw1"
+}
+UUID of created DBaaS service:
+09fc3cec-fa71-4979-8aa3-ec7594cb944d
+```
+
 Once migration is completed (`"status": "done"`) you can move SQL queries to new DBaaS service and can disable replication with `disable-replication.sh`
 ```
 bash disable-replication.sh -u 09fc3cec-fa71-4979-8aa3-ec7594cb944d
 ```
 
 Please note that migration does not transfer users of source database server so you will need to create users to 
-DBaaS via UpCloud Hub
+DBaaS via UpCloud Hub.
+
 #### create-dbaas-and-migrate.sh
 This script creates DBaaS and starts migration from source database server to new DBaaS system. 
 
@@ -214,8 +245,29 @@ Usage:
       -i <Comma separated list of databases to ignore>
       -d <Database name of bootstrapping the initial connection>
     Example:
-      create-dbaas-and-migrate.sh -n updcloud-dbaas -S 2x2xCPU-4GB-50GB -z pl-waw1 -H yoursourceserver.com -U root -p YourPassW0rd -P 3306 -m dump -s false
+      create-dbaas-and-migrate.sh -n updcloud-dbaas -S 2x2xCPU-4GB-50GB -z pl-waw1 -H yoursourceserver.com -U root -p YourPassW0rd -P 5432 -m dump -s false
     Use -h for infromation about this script.
+```
+
+#### start-migration-pre-check.sh
+This script validates your migration settings and is helpful when debugging issues with migration.
+```
+Usage:
+    start-migration-pre-check.sh [ Required options]
+    Required options:
+      -u <UpCloud DBaaS UUID>
+      -H <Public Hostname or IPv4 address of server where to migrate data from>
+      -U <Username for authentication with server where to migrate data from>
+      -p <Password for authentication with the server where to migrate data from>
+      -P <Port number of the server where to migrate data from>
+      -m <Migration method. Value dump or replication>
+      -s <Should we use SSL connection to source server during migration. Value true or false>
+    Secondary options:
+      -d <Database name of bootstrapping the initial connection>
+    Example:
+      start-migration-pre-check.sh -u 09352622-5db9-4053-b3f2-791d3f8c8f63 -H yoursourceserver.com -U root -p YourPassW0rd -P 5432 -d postgres -m replication -s true
+    Use -h for infromation about this script.
+    
 ```
 
 #### start-migration.sh

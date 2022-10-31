@@ -5,7 +5,7 @@ help()
     start-migration-pre-check.sh [ Required options]
     Required options:
       -u <UpCloud DBaaS UUID>
-      -H <Hostname or IPv4 address of server where to migrate data from>
+      -H <Public Hostname or IPv4 address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>
@@ -92,7 +92,7 @@ fi
 
 echo -e "Creating migration check task… \n"
 
-DATA="{\"migration_check\": { \"source_service_uri\": \"mysql://$SOURCE_USER:$SOURCE_PASSWORD@$SOURCE_HOST:$SOURCE_PORT/$DBNAME\", \"ignore_dbs\": \"$IGNORE_DBS\"  }, \"operation\": \"migration_check\"}"
+DATA="{\"migration_check\": { \"source_service_uri\": \"mysql://$SOURCE_USER:$SOURCE_PASSWORD@$SOURCE_HOST:$SOURCE_PORT/$DBNAME\", \"ignore_dbs\": \"$IGNORE_DBS\" }, \"operation\": \"migration_check\"}"
 result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X POST -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/task -d "$DATA") 
 taskId=$( jq -r '.id?' <<< $result)
 

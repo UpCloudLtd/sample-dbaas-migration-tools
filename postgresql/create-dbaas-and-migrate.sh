@@ -7,7 +7,7 @@ help()
       -n <Upcloud DBaaS hostname>
       -S <UpCloud DBaaS plan size>
       -z <UpCloud zone/Datacenter>
-      -H <Hostname or IPv4 address of server where to migrate data from>
+      -H <Public Hostname or IPv4 address of server where to migrate data from>
       -U <Username for authentication with server where to migrate data from>
       -p <Password for authentication with the server where to migrate data from>
       -P <Port number of the server where to migrate data from>
