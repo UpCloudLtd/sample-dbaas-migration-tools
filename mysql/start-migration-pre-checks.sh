@@ -93,7 +93,7 @@ fi
 echo -e "Creating migration check task… \n"
 
 DATA="{\"migration_check\": { \"source_service_uri\": \"mysql://$SOURCE_USER:$SOURCE_PASSWORD@$SOURCE_HOST:$SOURCE_PORT/$DBNAME\", \"ignore_dbs\": \"$IGNORE_DBS\" }, \"operation\": \"migration_check\"}"
-result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X POST -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/task -d "$DATA") 
+result=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X POST -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/tasks -d "$DATA") 
 taskId=$( jq -r '.id?' <<< $result)
 
 if [[ "$taskId" == "null" ]]; then
@@ -111,7 +111,7 @@ taskFinished=0
 count=1
 while [ $taskFinished -eq 0 ]; do
     sleep 3
-    taskResult=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X GET -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/task/$taskId)
+    taskResult=$(curl -s -u "$UPCLOUD_USERNAME:$UPCLOUD_PASSWORD" -X GET -H Content-Type:application/json https://api.upcloud.com/1.3/database/$UUID/tasks/$taskId)
     echo "Task Result : Poll #$count"
     echo "$taskResult" | jq
     successResult=$( jq -r '.success?' <<< $taskResult)
