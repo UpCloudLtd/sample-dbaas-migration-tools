@@ -53,11 +53,6 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
-    -m)
-      METHOD=$2
-      shift
-      shift
-      ;;
     -s)
       SSL=$2
       shift
@@ -75,7 +70,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z $UUID || -z $SOURCE_HOST || -z $SOURCE_USER || -z $SOURCE_PORT || -z $SOURCE_PASSWORD || -z $METHOD || -z $SSL ]]
+if [[ -z $UUID || -z $SOURCE_HOST || -z $SOURCE_USER || -z $SOURCE_PORT || -z $SOURCE_PASSWORD || -z $SSL ]]
 then
    echo "Missing required variable. You need to define all required arguments."
    echo
