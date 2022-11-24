@@ -50,6 +50,16 @@ You will need to manually create all existing users to UpCloud DBaaS cluster. Yo
 you will need to change DNS settings or software settings to connect to UpCloud DBaaS cluster instead of old database server. 
 
 ## Hub usage
+You can find Migration feature from Settings tab of DBaaS page.
+![Mysql-step-1](pictures/mysql-1.png)
+You can choose to use URI with necessary parameters or manual configuration.
+![Mysql-step-1-1](pictures/mysql-1-1.png)
+With MySQL you can choose migration method between replication or dump. Then you have to add source database server public hostname or IP, MySQL port, username and password and database that is used for initial connection. You can also add list of databases that migration should ignore.
+![Mysql-step-2](pictures/mysql-2.png)
+UpCloud will verify if migration is possible and what is the preferred method.
+![Mysql-step-3](pictures/mysql-3.png)
+You can track migration in more detail from migration progress window.
+![Mysql-step-4](pictures/mysql-4.png)
 
 ## Bash script usage
 We have provided you with following bash scripts `start-migration.sh`, `start-migration-pre-checks.sh`, `disable-replication.sh` and `create-dbaas-and-migrate.sh` that can be used to 
