@@ -33,18 +33,31 @@ you will need to change DNS settings or software settings to connect to UpCloud 
 
 ## Hub usage
 You can find Migration feature from Settings tab of DBaaS page.
+
 ![Pgsql-step-1](pictures/pgsql-1.png)
+
 You can choose to use URI with necessary parameters or manual configuration.
+
 ![Pgsql-step-2](pictures/pgsql-2.png)
+
 You will need to add source database server public hostname or IP, PostgreSQL port, username and password and database that is used for initial connection.
+
 ![Pgsql-step-3](pictures/pgsql-3.png)
+
 UpCloud will verify if migration is possible and what is the preferred method. 
+
 ![Pgsql-step-4](pictures/pgsql-4.png)
+
 Migration status is visible on top of page. PostgreSQL migration might initially fail, but it is retried so you should wait for a while if migration is working.
+
 ![Pgsql-step-5](pictures/pgsql-5.png)
+
 You can track migration in more detail from migration progress window and in this case replication failed for one database which is why status is failed.
+
 ![Pgsql-step-6](pictures/pgsql-6.png)
+
 After waiting a while migration is restarted and this time all databases get synced and data migration is done and replication will continue to sync the data.
+
 ![Pgsql-step-7](pictures/pgsql-7.png)
 ## Bash script usage 
 
